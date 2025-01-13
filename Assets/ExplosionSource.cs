@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class ExplosionSource : MonoBehaviour
 {
-    [SerializeField] private float _power;
+    [SerializeField] private float _explosionPower;
 
     private const int MinNumberOfNewObjects = 2;
     private const int MaxNumberOfNewObjects = 6;
+    private const float ExplosionPowerDividor = 2;
 
-    private float _chance = 1f;
+    private float _chanceToExplode = 1f;
 
     private void OnMouseDown()
     {
         float randomValue = Random.value;
         
-        if (randomValue <= _chance)
+        if (randomValue <= _chanceToExplode)
         {
             Explode();
         }
@@ -25,41 +26,25 @@ public class ExplosionSource : MonoBehaviour
 
     private void Explode()
     {
-        int numberOfNewObjects = Random.Range(MinNumberOfNewObjects, MaxNumberOfNewObjects);
+        int countOfNewObjects = Random.Range(MinNumberOfNewObjects, MaxNumberOfNewObjects);
 
-        for (int i = 0; i < numberOfNewObjects; i++)
+        for (int i = 0; i < countOfNewObjects; i++)
         {
             GameObject newObject = Instantiate(gameObject);
-            var newX = transform.position.x + Random.Range(-_power, _power);
-            var newY = transform.position.y + Random.Range(-_power, _power);
-            var newZ = transform.position.z + Random.Range(-_power, _power);
+            var newX = transform.position.x + Random.Range(-_explosionPower, _explosionPower);
+            var newY = transform.position.y + Random.Range(-_explosionPower, _explosionPower);
+            var newZ = transform.position.z + Random.Range(-_explosionPower, _explosionPower);
             newObject.transform.position = new Vector3(newX, newY, newZ);
             newObject.transform.localScale /= 2;
             ExplosionSource newExplosionSource = newObject.GetComponent<ExplosionSource>();
 
             if (newExplosionSource != null)
-                newExplosionSource._chance = _chance / 2;
-
-            SetRandomColor(newObject);
+                newExplosionSource._chanceToExplode = _chanceToExplode / ExplosionPowerDividor;
+            
+            Cube cube = newObject.GetComponent<Cube>();
+            cube?.SetRandomColor();
         }
     }
 
-    private void SetRandomColor(GameObject targetObject)
-    {
-        Color randomColor = new Color(Random.value, Random.value, Random.value);
-
-        Renderer renderer = targetObject.GetComponent<Renderer>();
-
-        if (renderer != null)
-        {
-            renderer.material.color = randomColor;
-        }
-        else
-        {
-            SpriteRenderer spriteRenderer = targetObject.GetComponent<SpriteRenderer>();
-
-            if (spriteRenderer != null)
-                spriteRenderer.color = randomColor;
-        }
-    }
+   
 }
