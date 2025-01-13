@@ -4,12 +4,26 @@ using UnityEngine;
 
 public class ExplosionSource : MonoBehaviour
 {
-    [SerializeField] private float _power = 5;
+    [SerializeField] private float _power;
 
     private const int MinNumberOfNewObjects = 2;
     private const int MaxNumberOfNewObjects = 6;
 
+    private float _chance = 1f;
+
     private void OnMouseDown()
+    {
+        float randomValue = Random.value;
+        
+        if (randomValue <= _chance)
+        {
+            Explode();
+        }
+
+        Destroy(gameObject);
+    }
+
+    private void Explode()
     {
         int numberOfNewObjects = Random.Range(MinNumberOfNewObjects, MaxNumberOfNewObjects);
 
@@ -21,10 +35,13 @@ public class ExplosionSource : MonoBehaviour
             var newZ = transform.position.z + Random.Range(-_power, _power);
             newObject.transform.position = new Vector3(newX, newY, newZ);
             newObject.transform.localScale /= 2;
+            ExplosionSource newExplosionSource = newObject.GetComponent<ExplosionSource>();
+
+            if (newExplosionSource != null)
+                newExplosionSource._chance = _chance / 2;
+
             SetRandomColor(newObject);
         }
-
-        Destroy(gameObject);
     }
 
     private void SetRandomColor(GameObject targetObject)
