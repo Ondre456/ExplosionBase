@@ -45,7 +45,7 @@ public class ExplosionSource : MonoBehaviour
 
         for (int i = 0; i < countOfNewObjects; i++)
         {
-            var explosionProduct = _explosionProductSpawner.CreateExplodableObject(gameObject, _explosionDividor);
+            var explosionProduct = _explosionProductSpawner.CreateExplodableObject(transform.position, transform.localScale / _explosionDividor, _explosionDividor);
             AddExplosionPower(explosionProduct);
         }
     }

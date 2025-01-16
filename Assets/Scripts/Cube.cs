@@ -3,8 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private Spawner _spawner;
-
     private Rigidbody _rigidbody;
     
     private void Awake()
