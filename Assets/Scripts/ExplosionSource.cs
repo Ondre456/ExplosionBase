@@ -4,11 +4,28 @@ public class ExplosionSource : MonoBehaviour
 {
     private const int MinNumberOfNewObjects = 2;
     private const int MaxNumberOfNewObjects = 6;
-    private const float ExplosionDividor = 2;
+    
 
     [SerializeField] private float _explosionPower;
+    [SerializeField] private Spawner _explosionProductSpawner;
 
     private float _chanceToExplode = 1f;
+    private float _explosionDividor = 2;
+
+    public void DivideChanceToExpload(float dividor)
+    {
+        _chanceToExplode /= dividor;
+    }
+    
+    public void AcceptSpawner(Spawner spawner)
+    {
+        _explosionProductSpawner = spawner;
+    }
+
+    public void SetNewDividor()
+    {
+        
+    }
 
     private void OnMouseDown()
     {
@@ -28,21 +45,14 @@ public class ExplosionSource : MonoBehaviour
 
         for (int i = 0; i < countOfNewObjects; i++)
         {
-            CreateExplosionProduct();
+            var explosionProduct = _explosionProductSpawner.CreateExplodableObject(gameObject, _explosionDividor);
+            AddExplosionPower(explosionProduct);
         }
     }
 
-    private void CreateExplosionProduct()
+    private void AddExplosionPower(Cube cube)
     {
-        GameObject explosionProduct = new GameObject("ExplosionProduct");
-        Cube cube = explosionProduct.AddComponent<Cube>();
-        cube.transform.localScale /= ExplosionDividor;
-        ExplosionSource newExplosionSource = explosionProduct.GetComponent<ExplosionSource>();
-
-        if (newExplosionSource != null)
-            newExplosionSource._chanceToExplode = _chanceToExplode / ExplosionDividor;
-
-        cube?.SetRandomColor();
-        cube?.AddRandomForce(_explosionPower);
+        Vector3 explosion = Random.onUnitSphere * _explosionPower;
+        cube.AcceptForce(explosion);
     }
 }
