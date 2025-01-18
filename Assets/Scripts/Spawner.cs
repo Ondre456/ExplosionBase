@@ -6,29 +6,28 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject _prefab;
 
-    public Cube[] SpawnCubes(Vector3 position, Vector3 scale, float dividor)
+    public GameObject[] Spawn(Vector3 position, Vector3 scale, float dividor)
     {
         const int MinNumberOfNewObjects = 2;
         const int MaxNumberOfNewObjects = 6;
 
         int countOfNewObjects = Random.Range(MinNumberOfNewObjects, MaxNumberOfNewObjects);
-        Cube[] result = new Cube[countOfNewObjects];
+        GameObject[] result = new GameObject[countOfNewObjects];
 
         for (int i = 0; i < countOfNewObjects; i++)
         {
-            GameObject explosionProduct = Instantiate(_prefab);
-            explosionProduct.AddComponent<MeshRenderer>();
-            explosionProduct.AddComponent<Rigidbody>();
-            explosionProduct.AddComponent<BoxCollider>();
-            explosionProduct.transform.position = position;
-            explosionProduct.transform.localScale = scale;
+            GameObject spawnableObject = Instantiate(_prefab);
+            spawnableObject.AddComponent<MeshRenderer>();
+            spawnableObject.AddComponent<Rigidbody>();
+            spawnableObject.AddComponent<BoxCollider>();
+            spawnableObject.transform.position = position;
+            spawnableObject.transform.localScale = scale;
 
-            Cube cube = explosionProduct.AddComponent<Cube>();
-            Repainter repainter = explosionProduct.AddComponent<Repainter>();
+            Repainter repainter = spawnableObject.AddComponent<Repainter>();
 
             repainter?.SetRandomColor();
 
-            result[i] = cube;
+            result[i] = spawnableObject;
         }
 
         return result;

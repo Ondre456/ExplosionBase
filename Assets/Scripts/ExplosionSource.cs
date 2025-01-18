@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,39 +10,30 @@ public class ExplosionSource : MonoBehaviour
     private float _chanceToExplode = 1f;
     private float _explosionDividor = 2;
 
-    public void DivideChanceToExpload(float dividor)
-    {
-        _chanceToExplode /= dividor;
-    }
-    
-    public void AcceptSpawner(Spawner spawner)
-    {
-        _explosionProductSpawner = spawner;
-    }
-
-    public void Explode()
+    public GameObject[] Explode()
     {
         float randomValue = Random.value;
+        var explosionProducts = new GameObject[0];
 
         if (randomValue <= _chanceToExplode)
         {
-            var explosionProducts = _explosionProductSpawner.SpawnCubes(transform.position, transform.localScale / _explosionDividor, _explosionDividor);
+            explosionProducts = _explosionProductSpawner.Spawn(transform.position, transform.localScale / _explosionDividor, _explosionDividor);
 
             foreach (var explosionProduct in explosionProducts)
             {
-                ExplosionSource explosionSource = explosionProduct.GetComponent<ExplosionSource>();
-                explosionSource.AcceptSpawner(_explosionProductSpawner);
-                explosionSource.DivideChanceToExpload(_explosionDividor);
-                AddExplosionPower(explosionProduct);
+                ExplosionSource explosionSource = explosionProduct.AddComponent<ExplosionSource>();
+                explosionSource._explosionProductSpawner = _explosionProductSpawner;
+                explosionSource._explosionPower = _explosionPower / _explosionDividor;
+                explosionSource._chanceToExplode = _chanceToExplode / _explosionDividor;
             }
         }
 
         Destroy(gameObject);
+        return explosionProducts;
     }
 
-    private void AddExplosionPower(Cube cube)
+    public Vector3 GetExplosionPower()
     {
-        Vector3 explosion = Random.onUnitSphere * _explosionPower;
-        cube.AcceptForce(explosion);
+        return Random.onUnitSphere * _explosionPower;
     }
 }

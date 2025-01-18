@@ -20,6 +20,12 @@ public class Cube : MonoBehaviour
 
     private void OnMouseDown()
     {
-        _explosionSource.Explode();
+        var eplosionProducts = _explosionSource.Explode();
+        
+        foreach (var product in eplosionProducts)
+        {
+            Cube cube = product.AddComponent<Cube>();
+            cube.AcceptForce(_explosionSource.GetExplosionPower());
+        }
     }
 }
