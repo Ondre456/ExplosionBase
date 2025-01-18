@@ -1,11 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ExplosionSource : MonoBehaviour
 {
-    private const int MinNumberOfNewObjects = 2;
-    private const int MaxNumberOfNewObjects = 6;
-    
-
     [SerializeField] private float _explosionPower;
     [SerializeField] private Spawner _explosionProductSpawner;
 
@@ -22,32 +19,24 @@ public class ExplosionSource : MonoBehaviour
         _explosionProductSpawner = spawner;
     }
 
-    public void SetNewDividor()
-    {
-        
-    }
-
-    private void OnMouseDown()
+    public void Explode()
     {
         float randomValue = Random.value;
-        
+
         if (randomValue <= _chanceToExplode)
         {
-            Explode();
+            var explosionProducts = _explosionProductSpawner.SpawnCubes(transform.position, transform.localScale / _explosionDividor, _explosionDividor);
+
+            foreach (var explosionProduct in explosionProducts)
+            {
+                ExplosionSource explosionSource = explosionProduct.GetComponent<ExplosionSource>();
+                explosionSource.AcceptSpawner(_explosionProductSpawner);
+                explosionSource.DivideChanceToExpload(_explosionDividor);
+                AddExplosionPower(explosionProduct);
+            }
         }
 
         Destroy(gameObject);
-    }
-
-    private void Explode()
-    {
-        int countOfNewObjects = Random.Range(MinNumberOfNewObjects, MaxNumberOfNewObjects);
-
-        for (int i = 0; i < countOfNewObjects; i++)
-        {
-            var explosionProduct = _explosionProductSpawner.CreateExplodableObject(transform.position, transform.localScale / _explosionDividor, _explosionDividor);
-            AddExplosionPower(explosionProduct);
-        }
     }
 
     private void AddExplosionPower(Cube cube)
