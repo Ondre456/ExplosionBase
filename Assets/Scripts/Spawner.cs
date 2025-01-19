@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Cube _prefab;
+    [SerializeField] private GameObject _prefab;
 
     public GameObject[] Spawn(Vector3 position, Vector3 scale)
     {

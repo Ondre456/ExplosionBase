@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Cube))]
 public class ExplosionSource : MonoBehaviour
 {
     [SerializeField] private float _explosionPower;
@@ -8,12 +7,6 @@ public class ExplosionSource : MonoBehaviour
 
     private float _chanceToExplode = 1f;
     private float _explosionDividor = 2;
-    private Cube _cube;
-
-    private void Awake()
-    {
-        _cube = GetComponent<Cube>();
-    }
 
     private void Explode()
     {
@@ -32,7 +25,7 @@ public class ExplosionSource : MonoBehaviour
                 explosionSource._chanceToExplode = _chanceToExplode / _explosionDividor;
                 Repainter repainter = explosionProduct.GetComponent<Repainter>();
                 repainter.SetRandomColor();
-                explosionProduct.GetComponent<Cube>().AcceptForce(GetExplosionPower());
+                explosionProduct.GetComponent<Rigidbody>().AddForce(GetExplosionPower());
             }
         }
 
