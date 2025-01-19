@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
@@ -15,6 +13,7 @@ public class Repainter : MonoBehaviour
     public void SetRandomColor()
     {
         Color randomColor = new Color(Random.value, Random.value, Random.value);
+        Debug.Log(_renderer.material);
         _renderer.material.color = randomColor;
     }
 }

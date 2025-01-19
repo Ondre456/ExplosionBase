@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _prefab;
+    [SerializeField] private Cube _prefab;
 
-    public GameObject[] Spawn(Vector3 position, Vector3 scale, float dividor)
+    public GameObject[] Spawn(Cube prefab, Vector3 position, Vector3 scale)
     {
         const int MinNumberOfNewObjects = 2;
         const int MaxNumberOfNewObjects = 6;
@@ -16,17 +14,11 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < countOfNewObjects; i++)
         {
-            GameObject spawnableObject = Instantiate(_prefab);
-            spawnableObject.AddComponent<MeshRenderer>();
-            spawnableObject.AddComponent<Rigidbody>();
-            spawnableObject.AddComponent<BoxCollider>();
+            GameObject spawnableObject = Instantiate(_prefab.gameObject);
             spawnableObject.transform.position = position;
             spawnableObject.transform.localScale = scale;
-
-            Repainter repainter = spawnableObject.AddComponent<Repainter>();
-
-            repainter?.SetRandomColor();
-
+            spawnableObject.GetComponent<MeshRenderer>().enabled = true;
+            spawnableObject.GetComponent<BoxCollider>().enabled = true;
             result[i] = spawnableObject;
         }
 
