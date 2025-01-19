@@ -4,7 +4,7 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _prefab;
 
-    public GameObject[] Spawn(Cube prefab, Vector3 position, Vector3 scale)
+    public GameObject[] Spawn(Vector3 position, Vector3 scale)
     {
         const int MinNumberOfNewObjects = 2;
         const int MaxNumberOfNewObjects = 6;

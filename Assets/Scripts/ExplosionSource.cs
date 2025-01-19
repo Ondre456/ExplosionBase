@@ -22,7 +22,7 @@ public class ExplosionSource : MonoBehaviour
 
         if (randomValue <= _chanceToExplode)
         {
-            explosionProducts = _explosionProductSpawner.Spawn(_cube, transform.position, transform.localScale / _explosionDividor);
+            explosionProducts = _explosionProductSpawner.Spawn(transform.position, transform.localScale / _explosionDividor);
 
             foreach (var explosionProduct in explosionProducts)
             {
