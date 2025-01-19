@@ -11,7 +11,7 @@ public class ExplosionSource : MonoBehaviour
     private void Explode()
     {
         float randomValue = Random.value;
-        var explosionProducts = new GameObject[0];
+        var explosionProducts = new Cube[0];
 
         if (randomValue <= _chanceToExplode)
         {
@@ -19,12 +19,12 @@ public class ExplosionSource : MonoBehaviour
 
             foreach (var explosionProduct in explosionProducts)
             {
-                ExplosionSource explosionSource = explosionProduct.AddComponent<ExplosionSource>();
+                ExplosionSource explosionSource = explosionProduct.gameObject.AddComponent<ExplosionSource>();
                 explosionSource._explosionProductSpawner = _explosionProductSpawner;
                 explosionSource._explosionPower = _explosionPower / _explosionDividor;
                 explosionSource._chanceToExplode = _chanceToExplode / _explosionDividor;
                 Repainter repainter = explosionProduct.GetComponent<Repainter>();
-                repainter.SetRandomColor();
+                repainter.ChangeColorToRandom();
                 explosionProduct.GetComponent<Rigidbody>().AddForce(GetExplosionPower());
             }
         }

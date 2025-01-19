@@ -10,7 +10,7 @@ public class Repainter : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
-    public void SetRandomColor()
+    public void ChangeColorToRandom()
     {
         Color randomColor = new Color(Random.value, Random.value, Random.value);
         Debug.Log(_renderer.material);
