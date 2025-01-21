@@ -1,9 +1,10 @@
 using UnityEngine;
 
+[RequireComponent(typeof(MassiveObject))]
 public class ExplosionSource : MonoBehaviour
 {
-    [SerializeField] private float _explosionPower;
     [SerializeField] private Spawner _explosionProductSpawner;
+    [SerializeField] private float _explosionPowerModifier = 2;
 
     private float _chanceToExplode = 1f;
     private float _explosionDividor = 2;
@@ -21,20 +22,15 @@ public class ExplosionSource : MonoBehaviour
             {
                 ExplosionSource explosionSource = explosionProduct.gameObject.AddComponent<ExplosionSource>();
                 explosionSource._explosionProductSpawner = _explosionProductSpawner;
-                explosionSource._explosionPower = _explosionPower / _explosionDividor;
                 explosionSource._chanceToExplode = _chanceToExplode / _explosionDividor;
                 Repainter repainter = explosionProduct.GetComponent<Repainter>();
                 repainter.ChangeColorToRandom();
-                explosionProduct.GetComponent<Rigidbody>().AddForce(GetExplosionPower());
             }
         }
 
-        Destroy(gameObject);
-    }
-
-    private Vector3 GetExplosionPower()
-    {
-        return Random.onUnitSphere * _explosionPower;
+        var explosion = gameObject.AddComponent<Explosion>();
+        Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
+        explosion.AcceptExplosionCharacteristics(rigidbody.mass, _explosionPowerModifier);
     }
 
     private void OnMouseDown()
