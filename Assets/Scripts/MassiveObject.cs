@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class MassiveObject : MonoBehaviour
+public class MassCalculator : MonoBehaviour
 {
     [SerializeField] private float _density = 1;
 
