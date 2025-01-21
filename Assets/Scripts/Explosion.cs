@@ -30,12 +30,12 @@ public class Explosion : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Rigidbody rb = other.GetComponent<Rigidbody>();
+        Rigidbody rigidbody = other.GetComponent<Rigidbody>();
 
-        if (rb != null)
+        if (rigidbody != null)
         {
             Vector3 direction = (other.transform.position - transform.position).normalized;
-            rb.AddForce((direction * _power) / _currentRadius, ForceMode.Impulse);
+            rigidbody.AddForce((direction * _power) / _currentRadius, ForceMode.Impulse);
         }
     }
 

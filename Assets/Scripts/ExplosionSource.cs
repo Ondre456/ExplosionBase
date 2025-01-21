@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MassiveObject))]
+[RequireComponent(typeof(MassCalculator))]
 public class ExplosionSource : MonoBehaviour
 {
     [SerializeField] private Spawner _explosionProductSpawner;
